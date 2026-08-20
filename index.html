@@ -131,10 +131,27 @@
     .rating-track span { display: block; height: 100%; border-radius: inherit; background: var(--blue); }
     .analysis-rating-card.is-gap .rating-status { color: var(--red); }
     .analysis-rating-card.is-gap .rating-track span { background: var(--red); }
-    .analysis-details { position: relative; z-index: 2; margin: 22px 0 0; border: 0; }
-    .analysis-details summary { width: fit-content; margin-left: auto; padding: 9px 12px; border: 1px solid #cfe2fb; border-radius: 999px; color: var(--blue); background: #f7fbff; font-size: 12px; font-weight: 700; }
-    .analysis-details summary::after { margin-left: 14px; }
-    .analysis-details .full-evaluation { width: min(570px, 100%); max-height: min(640px, 72vh); margin: 12px 0 0 auto; padding: 24px; overflow-y: auto; border: 1px solid var(--line); border-radius: 20px; background: rgba(255,255,255,.98); box-shadow: 0 28px 80px rgba(33,33,38,.2); backdrop-filter: blur(18px); }
+    .analysis-details { position: relative; z-index: 2; margin: 24px -28px -28px; border: 0; border-top: 1px solid var(--line); }
+    .analysis-details summary { width: 100%; min-height: 68px; margin: 0; padding: 16px 28px; align-items: center; border: 0; border-radius: 0 0 var(--radius) var(--radius); color: var(--ink); background: rgba(247,251,255,.72); }
+    .analysis-details summary:hover { background: #f2f7fd; }
+    .analysis-details[open] summary { border-radius: 0; background: #f7fbff; }
+    .analysis-details summary > span { display: grid; gap: 3px; }
+    .analysis-details summary strong { font-size: 14px; }
+    .analysis-details summary small { color: var(--muted); font-size: 12px; font-weight: 400; }
+    .analysis-details summary::after { margin-left: 24px; }
+    .analysis-details .full-evaluation { width: 100%; max-height: none; margin: 0; padding: 30px 28px 32px; overflow: visible; border: 0; border-top: 1px solid var(--line); border-radius: 0 0 var(--radius) var(--radius); background: #fbfbfd; box-shadow: none; }
+    .evaluation-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
+    .evaluation-block { min-width: 0; }
+    .evaluation-block + .evaluation-block { padding-left: 28px; border-left: 1px solid var(--line); }
+    .analysis-details .evaluation-block h3, .analysis-details .evaluation-callout h3, .analysis-details .evaluation-actions h3 { margin: 0 0 10px; }
+    .analysis-details .evaluation-block ul { margin: 0; }
+    .evaluation-callout { margin-top: 28px; padding: 22px 24px; border-radius: 16px; color: #31516f; background: var(--blue-soft); }
+    .analysis-details .evaluation-callout h3 { color: #096fd8; }
+    .evaluation-callout p { max-width: 76ch; margin: 0; }
+    .evaluation-actions { display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 24px; margin-top: 26px; padding-top: 24px; border-top: 1px solid var(--line); }
+    .evaluation-actions ul { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin: 0; padding: 0; list-style: none; counter-reset: practice-step; }
+    .evaluation-actions li { position: relative; padding-left: 24px; counter-increment: practice-step; }
+    .evaluation-actions li::before { content: counter(practice-step); position: absolute; top: 1px; left: 0; display: grid; width: 17px; height: 17px; place-items: center; border-radius: 50%; color: #fff; background: var(--blue); font-size: 10px; font-weight: 700; }
     .metric-reason { grid-column: 1 / -1; margin-top: -5px; color: var(--muted); font-size: 12px; line-height: 1.4; }
     .analysis-flow { display: flex; flex-direction: column; align-items: center; margin: 0 0 24px; color: var(--blue); }
     .flow-line { width: 1px; height: 28px; background: linear-gradient(var(--line), var(--blue)); }
@@ -193,7 +210,11 @@
       .analysis-head h2 { margin-bottom: 10px; }
       .analysis-overview { grid-template-columns: 1fr; }
       .analysis-summary-block { padding: 0 0 22px; border-right: 0; border-bottom: 1px solid var(--line); }
-      .analysis-details { margin-top: 20px; }
+      .analysis-details { margin: 22px -28px -28px; }
+      .evaluation-grid { grid-template-columns: 1fr; gap: 24px; }
+      .evaluation-block + .evaluation-block { padding: 24px 0 0; border-top: 1px solid var(--line); border-left: 0; }
+      .evaluation-actions { grid-template-columns: 1fr; gap: 10px; }
+      .evaluation-actions ul { grid-template-columns: 1fr; gap: 12px; }
       .analysis-summary-block .section-kicker { padding-right: 150px; }
       .analysis-ratings { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .focus-panel { grid-template-columns: 1fr; gap: 0; }
@@ -206,6 +227,8 @@
       .meta-chip { display: inline-block; margin-top: 14px; }
       .metric { grid-template-columns: 1fr 78px 42px; gap: 10px; }
       .analysis-ratings { grid-template-columns: 1fr; }
+      .analysis-details summary { padding-inline: 20px; }
+      .analysis-details .full-evaluation { padding: 24px 20px 26px; }
       .footer { display: block; }
       .footer span { display: block; margin-top: 6px; }
     }
@@ -312,16 +335,26 @@
         </div>
       </div>
       <details class="analysis-details">
-        <summary>Read full evaluation</summary>
+        <summary><span><strong>Read full evaluation</strong><small>Evidence, coaching notes, and recommended next steps</small></span></summary>
         <div class="full-evaluation">
-          <h3>What worked</h3>
-          <ul><li>Stable posture and a consistent, forward-facing eye line.</li><li>Natural pacing and easy-to-follow language.</li><li>Clean lighting with full facial visibility.</li></ul>
-          <h3>What needs work</h3>
-          <ul><li>Use a warmer greeting, empathetic nods, and open hand gestures.</li><li>Replace filler words such as “you know,” “right,” and “it’s like” with confident pauses.</li><li>Use the official branded uniform and a more polished grooming standard.</li><li>Correct the battery figure to 5,000 mAh and use the full Snapdragon 8 Elite Gen 5 for Galaxy name.</li><li>Highlight the Built-in Privacy Display, Integrated S Pen, 60 W fast charging, and 7-year software guarantee.</li></ul>
-          <h3>Suggested value response</h3>
-          <p>“I completely understand. It’s a significant investment, so let’s make sure every rupee delivers real value for your daily routine. Since you use your phone heavily, the 5,000 mAh battery, 60 W charging, and improved cooling are designed to keep up over time. We can also check exchange value and EMI options.”</p>
-          <h3>Practice next</h3>
-          <ul><li>Re-certify on the Vineyard specification sheet.</li><li>Practice asking discovery questions before recommending.</li><li>Roleplay the three-step response: acknowledge, connect value, offer a path to purchase.</li></ul>
+          <div class="evaluation-grid">
+            <section class="evaluation-block" aria-labelledby="evaluation-worked-title">
+              <h3 id="evaluation-worked-title">What worked</h3>
+              <ul><li>Stable posture and a consistent, forward-facing eye line.</li><li>Natural pacing and easy-to-follow language.</li><li>Clean lighting with full facial visibility.</li></ul>
+            </section>
+            <section class="evaluation-block" aria-labelledby="evaluation-improve-title">
+              <h3 id="evaluation-improve-title">What needs work</h3>
+              <ul><li>Use a warmer greeting, empathetic nods, and open hand gestures.</li><li>Replace filler words such as “you know,” “right,” and “it’s like” with confident pauses.</li><li>Use the official branded uniform and a more polished grooming standard.</li><li>Correct the battery figure to 5,000 mAh and use the full Snapdragon 8 Elite Gen 5 for Galaxy name.</li><li>Highlight the Built-in Privacy Display, Integrated S Pen, 60 W fast charging, and 7-year software guarantee.</li></ul>
+            </section>
+          </div>
+          <section class="evaluation-callout" aria-labelledby="value-response-title">
+            <h3 id="value-response-title">Suggested value response</h3>
+            <p>“I completely understand. It’s a significant investment, so let’s make sure every rupee delivers real value for your daily routine. Since you use your phone heavily, the 5,000 mAh battery, 60 W charging, and improved cooling are designed to keep up over time. We can also check exchange value and EMI options.”</p>
+          </section>
+          <section class="evaluation-actions" aria-labelledby="practice-next-title">
+            <h3 id="practice-next-title">Practice next</h3>
+            <ul><li>Re-certify on the Vineyard specification sheet.</li><li>Practice asking discovery questions before recommending.</li><li>Roleplay the three-step response: acknowledge, connect value, offer a path to purchase.</li></ul>
+          </section>
         </div>
       </details>
     </section>
