@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f5f5f7">
-  <title>Sales call · AI review</title>
+  <title>AI Labs · Conversation intelligence</title>
   <style>
     :root {
       --paper: #f5f5f7;
@@ -37,7 +37,8 @@
     .page { width: min(1180px, calc(100% - 48px)); margin: 0 auto; padding: 28px 0 72px; }
     .topbar { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-bottom: 40px; }
     .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: -.03em; }
-    .brand-mark { width: 28px; height: 28px; border-radius: 9px; display: grid; place-items: center; color: white; background: var(--ink); font-size: 12px; }
+    .brand-mark { width: 34px; height: 34px; overflow: hidden; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+    .brand-mark img { width: 94px; height: 42px; max-width: none; object-fit: contain; object-position: left center; }
     .top-note { color: var(--muted); font-size: 13px; }
 
     .hero { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 32px; padding-bottom: 42px; }
@@ -130,10 +131,10 @@
     .rating-track span { display: block; height: 100%; border-radius: inherit; background: var(--blue); }
     .analysis-rating-card.is-gap .rating-status { color: var(--red); }
     .analysis-rating-card.is-gap .rating-track span { background: var(--red); }
-    .analysis-details { position: absolute; z-index: 12; top: 22px; right: 28px; margin: 0; border: 0; }
+    .analysis-details { position: relative; z-index: 2; margin: 22px 0 0; border: 0; }
     .analysis-details summary { width: fit-content; margin-left: auto; padding: 9px 12px; border: 1px solid #cfe2fb; border-radius: 999px; color: var(--blue); background: #f7fbff; font-size: 12px; font-weight: 700; }
     .analysis-details summary::after { margin-left: 14px; }
-    .analysis-details .full-evaluation { position: absolute; top: 48px; right: 0; width: min(570px, calc(100vw - 64px)); max-height: min(640px, 72vh); margin: 0; padding: 24px; overflow-y: auto; border: 1px solid var(--line); border-radius: 20px; background: rgba(255,255,255,.98); box-shadow: 0 28px 80px rgba(33,33,38,.2); backdrop-filter: blur(18px); }
+    .analysis-details .full-evaluation { width: min(570px, 100%); max-height: min(640px, 72vh); margin: 12px 0 0 auto; padding: 24px; overflow-y: auto; border: 1px solid var(--line); border-radius: 20px; background: rgba(255,255,255,.98); box-shadow: 0 28px 80px rgba(33,33,38,.2); backdrop-filter: blur(18px); }
     .metric-reason { grid-column: 1 / -1; margin-top: -5px; color: var(--muted); font-size: 12px; line-height: 1.4; }
     .analysis-flow { display: flex; flex-direction: column; align-items: center; margin: 0 0 24px; color: var(--blue); }
     .flow-line { width: 1px; height: 28px; background: linear-gradient(var(--line), var(--blue)); }
@@ -192,7 +193,7 @@
       .analysis-head h2 { margin-bottom: 10px; }
       .analysis-overview { grid-template-columns: 1fr; }
       .analysis-summary-block { padding: 0 0 22px; border-right: 0; border-bottom: 1px solid var(--line); }
-      .analysis-details { top: 20px; right: 20px; }
+      .analysis-details { margin-top: 20px; }
       .analysis-summary-block .section-kicker { padding-right: 150px; }
       .analysis-ratings { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .focus-panel { grid-template-columns: 1fr; gap: 0; }
@@ -218,8 +219,7 @@
 <body>
   <main class="page">
     <nav class="topbar" aria-label="Page header">
-      <div class="brand"><span class="brand-mark" aria-hidden="true">S</span><span>Sales call · AI review</span></div>
-      <span class="top-note">Samsung Galaxy S26 Ultra · 20 Aug 2026</span>
+      <div class="brand"><span class="brand-mark" aria-hidden="true"><img src="AILabsLogo.webp" alt=""></span><span>AI Labs · Conversation intelligence</span></div>
     </nav>
 
     <header class="hero">
@@ -275,7 +275,7 @@
       <article class="panel features-card source-reference" aria-labelledby="features-title">
         <p class="input-cue cue-reference">Reference input</p>
         <h2 id="features-title">What the pitch could draw from</h2>
-        <p>Reference facts from the Galaxy S26 Ultra feature sheet are compared with what was said.</p>
+        <p>Reference facts from the Vineyard feature sheet are compared with what was said.</p>
         <ul class="feature-list">
           <li><strong>Launch price</strong><span>₹1,39,999 · 256 GB / 12 GB</span></li>
           <li><strong>Build</strong><span>Armor Aluminum · 214 g · 7.9 mm</span></li>
@@ -321,7 +321,7 @@
           <h3>Suggested value response</h3>
           <p>“I completely understand. It’s a significant investment, so let’s make sure every rupee delivers real value for your daily routine. Since you use your phone heavily, the 5,000 mAh battery, 60 W charging, and improved cooling are designed to keep up over time. We can also check exchange value and EMI options.”</p>
           <h3>Practice next</h3>
-          <ul><li>Re-certify on the Galaxy S26 Ultra specification sheet.</li><li>Practice asking discovery questions before recommending.</li><li>Roleplay the three-step response: acknowledge, connect value, offer a path to purchase.</li></ul>
+          <ul><li>Re-certify on the Vineyard specification sheet.</li><li>Practice asking discovery questions before recommending.</li><li>Roleplay the three-step response: acknowledge, connect value, offer a path to purchase.</li></ul>
         </div>
       </details>
     </section>
@@ -341,18 +341,18 @@
 
     </section>
 
-    <footer class="footer"><span>Internal sales training review</span><span>Evaluation generated 20 August 2026</span></footer>
+    <footer class="footer"><span>Conversation intelligence demo</span><span>AI Labs</span></footer>
   </main>
   <script>
     const transcript = [
       ['Customer', "Hi, I'm thinking of upgrading my phone. I've been using my current one for a few years, and I mainly want something with a really good camera and good battery life. I don't really game much, but I use my phone pretty heavily throughout the day. What would you suggest?"],
-      ['Salesperson', "In that case, I'd take a look at the Samsung Galaxy S26 Ultra. It's Samsung's latest flagship, released in 2026. The camera is one of its biggest strengths—you get a 200MP main camera with dedicated zoom cameras, so it's great for everyday photos, portraits, and longer-distance shots."],
+      ['Salesperson', "In that case, I'd take a look at Vineyard. It's Vineyard's latest flagship, released in 2026. The camera is one of its biggest strengths—you get a 200MP main camera with dedicated zoom cameras, so it's great for everyday photos, portraits, and longer-distance shots."],
       ['Customer', "That sounds good, but flagship phones are getting really expensive now. How much does this one actually cost?"],
       ['Salesperson', "It launched in India at around ₹1.4 lakh for the 256GB version, so yes, it's definitely a premium phone."],
       ['Customer', "Okay... and apart from the camera, what am I actually getting for that price?"],
-      ['Salesperson', "You get a large 6.9-inch 120Hz AMOLED display, flagship Snapdragon performance, a 5,000mAh battery, and Samsung's Galaxy AI features for things like photo editing, search, and everyday assistance."],
+      ['Salesperson', "You get a large 6.9-inch 120Hz AMOLED display, flagship Snapdragon performance, a 5,000mAh battery, and Vineyard AI features for things like photo editing, search, and everyday assistance."],
       ['Customer', "Hmm... I don't know. ₹1.4 lakh still feels like a lot. I'm not really convinced I'd use enough of those features to justify spending that much."],
-      ['Salesperson', "That's completely fair. In that case, I wouldn't push you toward the Ultra. Let me show you the regular Galaxy S26 instead. You'll still get the core Samsung flagship experience and strong performance, but at a lower price. We can compare the two side by side and see whether the Ultra actually gives you anything worth paying extra for."]
+      ['Salesperson', "That's completely fair. In that case, I wouldn't push you toward Vineyard's premium model. Let me show you the standard Vineyard instead. You'll still get the core flagship experience and strong performance, but at a lower price. We can compare the two side by side and see whether the premium model actually gives you anything worth paying extra for."]
     ];
 
     const transcriptRoot = document.querySelector('#transcript');
