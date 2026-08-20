@@ -110,7 +110,7 @@
     .analysis-head { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 20px; }
     .analysis-head h2 { margin-bottom: 0; font-size: 32px; letter-spacing: -.055em; }
     .analysis-head p { max-width: 390px; margin-bottom: 1px; color: var(--muted); font-size: 14px; line-height: 1.45; }
-    .ai-analysis-panel { padding: 28px; }
+    .ai-analysis-panel { position: relative; padding: 28px; }
     .ai-analysis-panel .section-kicker { margin-bottom: 8px; }
     .ai-analysis-panel h2 { margin-bottom: 10px; font-size: 25px; letter-spacing: -.055em; }
     .executive-summary { margin-bottom: 20px; color: var(--muted); font-size: 14px; line-height: 1.5; }
@@ -130,6 +130,10 @@
     .rating-track span { display: block; height: 100%; border-radius: inherit; background: var(--blue); }
     .analysis-rating-card.is-gap .rating-status { color: var(--red); }
     .analysis-rating-card.is-gap .rating-track span { background: var(--red); }
+    .analysis-details { position: absolute; z-index: 12; top: 22px; right: 28px; margin: 0; border: 0; }
+    .analysis-details summary { width: fit-content; margin-left: auto; padding: 9px 12px; border: 1px solid #cfe2fb; border-radius: 999px; color: var(--blue); background: #f7fbff; font-size: 12px; font-weight: 700; }
+    .analysis-details summary::after { margin-left: 14px; }
+    .analysis-details .full-evaluation { position: absolute; top: 48px; right: 0; width: min(570px, calc(100vw - 64px)); max-height: min(640px, 72vh); margin: 0; padding: 24px; overflow-y: auto; border: 1px solid var(--line); border-radius: 20px; background: rgba(255,255,255,.98); box-shadow: 0 28px 80px rgba(33,33,38,.2); backdrop-filter: blur(18px); }
     .metric-reason { grid-column: 1 / -1; margin-top: -5px; color: var(--muted); font-size: 12px; line-height: 1.4; }
     .analysis-flow { display: flex; flex-direction: column; align-items: center; margin: 0 0 24px; color: var(--blue); }
     .flow-line { width: 1px; height: 28px; background: linear-gradient(var(--line), var(--blue)); }
@@ -188,6 +192,8 @@
       .analysis-head h2 { margin-bottom: 10px; }
       .analysis-overview { grid-template-columns: 1fr; }
       .analysis-summary-block { padding: 0 0 22px; border-right: 0; border-bottom: 1px solid var(--line); }
+      .analysis-details { top: 20px; right: 20px; }
+      .analysis-summary-block .section-kicker { padding-right: 150px; }
       .analysis-ratings { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .focus-panel { grid-template-columns: 1fr; gap: 0; }
       .focus-panel h3 { margin-bottom: 20px; }
@@ -305,6 +311,19 @@
           <article class="analysis-rating-card is-gap"><h3>Objection handling</h3><strong>2.5 <small>/ 5</small></strong><span class="rating-status">Needs coaching</span><span class="rating-track"><span style="width:50%"></span></span><p>No discovery questions; moved away before establishing value.</p></article>
         </div>
       </div>
+      <details class="analysis-details">
+        <summary>Read full evaluation</summary>
+        <div class="full-evaluation">
+          <h3>What worked</h3>
+          <ul><li>Stable posture and a consistent, forward-facing eye line.</li><li>Natural pacing and easy-to-follow language.</li><li>Clean lighting with full facial visibility.</li></ul>
+          <h3>What needs work</h3>
+          <ul><li>Use a warmer greeting, empathetic nods, and open hand gestures.</li><li>Replace filler words such as “you know,” “right,” and “it’s like” with confident pauses.</li><li>Use the official branded uniform and a more polished grooming standard.</li><li>Correct the battery figure to 5,000 mAh and use the full Snapdragon 8 Elite Gen 5 for Galaxy name.</li><li>Highlight the Built-in Privacy Display, Integrated S Pen, 60 W fast charging, and 7-year software guarantee.</li></ul>
+          <h3>Suggested value response</h3>
+          <p>“I completely understand. It’s a significant investment, so let’s make sure every rupee delivers real value for your daily routine. Since you use your phone heavily, the 5,000 mAh battery, 60 W charging, and improved cooling are designed to keep up over time. We can also check exchange value and EMI options.”</p>
+          <h3>Practice next</h3>
+          <ul><li>Re-certify on the Galaxy S26 Ultra specification sheet.</li><li>Practice asking discovery questions before recommending.</li><li>Roleplay the three-step response: acknowledge, connect value, offer a path to purchase.</li></ul>
+        </div>
+      </details>
     </section>
 
     <section id="analysis" aria-labelledby="analysis-title">
@@ -320,19 +339,6 @@
         <div class="focus-item"><strong>Reframe price with value</strong><p>Connect the ₹1,39,999 investment to their needs, then mention trade-in, bank EMI, and long-term durability before downselling.</p></div>
       </div>
 
-      <details>
-        <summary>Read the full evaluation</summary>
-        <div class="full-evaluation">
-          <h3>What worked</h3>
-          <ul><li>Stable posture and a consistent, forward-facing eye line.</li><li>Natural pacing and easy-to-follow language.</li><li>Clean lighting with full facial visibility.</li></ul>
-          <h3>What needs work</h3>
-          <ul><li>Use a warmer greeting, empathetic nods, and open hand gestures.</li><li>Replace filler words such as “you know,” “right,” and “it’s like” with confident pauses.</li><li>Use the official branded uniform and a more polished grooming standard.</li><li>Correct the battery figure to 5,000 mAh and use the full Snapdragon 8 Elite Gen 5 for Galaxy name.</li><li>Highlight the Built-in Privacy Display, Integrated S Pen, 60 W fast charging, and 7-year software guarantee.</li></ul>
-          <h3>Suggested value response</h3>
-          <p>“I completely understand. It’s a significant investment, so let’s make sure every rupee delivers real value for your daily routine. Since you use your phone heavily, the 5,000 mAh battery, 60 W charging, and improved cooling are designed to keep up over time. We can also check exchange value and EMI options.”</p>
-          <h3>Practice next</h3>
-          <ul><li>Re-certify on the Galaxy S26 Ultra specification sheet.</li><li>Practice asking discovery questions before recommending.</li><li>Roleplay the three-step response: acknowledge, connect value, offer a path to purchase.</li></ul>
-        </div>
-      </details>
     </section>
 
     <footer class="footer"><span>Internal sales training review</span><span>Evaluation generated 20 August 2026</span></footer>
