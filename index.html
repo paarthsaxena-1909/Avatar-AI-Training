@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f5f7">
+  <title>Sales call · AI review</title>
+  <style>
+    :root {
+      --paper: #f5f5f7;
+      --card: rgba(255, 255, 255, .82);
+      --ink: #1d1d1f;
+      --muted: #707078;
+      --line: #e3e3e8;
+      --blue: #147ef5;
+      --blue-soft: #eaf3ff;
+      --amber: #a26c00;
+      --red: #b33a36;
+      --green: #277044;
+      --shadow: 0 20px 60px rgba(33, 33, 38, .08);
+      --radius: 24px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    button, summary { font: inherit; }
+    button:focus-visible, summary:focus-visible, a:focus-visible { outline: 3px solid rgba(20, 126, 245, .35); outline-offset: 4px; }
+    a { color: inherit; }
+
+    .page { width: min(1180px, calc(100% - 48px)); margin: 0 auto; padding: 28px 0 72px; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-bottom: 40px; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; letter-spacing: -.03em; }
+    .brand-mark { width: 28px; height: 28px; border-radius: 9px; display: grid; place-items: center; color: white; background: var(--ink); font-size: 12px; }
+    .top-note { color: var(--muted); font-size: 13px; }
+
+    .hero { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 32px; padding-bottom: 42px; }
+    .eyebrow, .section-kicker { margin: 0 0 14px; color: var(--blue); font-size: 12px; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+    h1, h2, p { margin-top: 0; }
+    h1 { max-width: 690px; margin-bottom: 14px; font-size: clamp(42px, 6vw, 76px); line-height: .98; letter-spacing: -.075em; font-weight: 700; }
+    .hero-copy { max-width: 510px; margin-bottom: 0; color: var(--muted); font-size: 18px; line-height: 1.48; letter-spacing: -.02em; }
+    .score-lockup { min-width: 190px; padding: 22px 24px; border: 1px solid var(--line); border-radius: 20px; background: var(--card); box-shadow: 0 10px 30px rgba(33,33,38,.04); }
+    .score-number { display: block; font-size: 46px; line-height: .9; letter-spacing: -.07em; font-weight: 700; }
+    .score-number small { color: var(--muted); font-size: 17px; letter-spacing: -.03em; }
+    .score-label { display: block; margin-top: 12px; color: var(--red); font-size: 12px; font-weight: 700; }
+
+    .review-stage { position: relative; display: block; margin-bottom: 30px; }
+    .video-card { overflow: hidden; border: 1px solid var(--line); border-radius: var(--radius); background: #fff; box-shadow: var(--shadow); }
+    .video-frame { display: flex; align-items: center; justify-content: center; min-height: 460px; padding: 18px; background: #eaeaf0; }
+    .video-card:first-child .video-frame { background: #dedee5; }
+    video { display: block; width: 100%; height: 100%; max-height: 540px; object-fit: contain; border-radius: 13px; background: #101014; }
+    .video-card:first-child video { max-width: 304px; }
+    .review-stage > .video-card:first-child video { width: 100%; max-width: none; aspect-ratio: 16 / 9; object-fit: contain; }
+    .hero-video { position: relative; }
+    .hero-video-controls { position: absolute; right: 30px; bottom: 30px; z-index: 2; display: flex; gap: 8px; }
+    .hero-video-toggle, .hero-video-mute { padding: 10px 14px; border: 1px solid rgba(255,255,255,.55); border-radius: 999px; color: #fff; background: rgba(20,20,24,.72); box-shadow: 0 8px 18px rgba(0,0,0,.16); cursor: pointer; font-size: 12px; font-weight: 700; backdrop-filter: blur(12px); }
+    .hero-video-toggle:hover, .hero-video-mute:hover { background: rgba(20,20,24,.9); }
+    .video-card:last-child video { aspect-ratio: 16 / 9; }
+    .video-meta { display: flex; align-items: start; justify-content: space-between; gap: 16px; padding: 20px 22px 22px; }
+    .video-meta h2 { margin-bottom: 6px; font-size: 18px; letter-spacing: -.035em; }
+    .video-meta p { margin-bottom: 0; color: var(--muted); font-size: 13px; line-height: 1.4; }
+    .meta-chip { flex: none; padding: 7px 9px; border-radius: 999px; color: var(--blue); background: var(--blue-soft); font-size: 11px; font-weight: 700; white-space: nowrap; }
+    .transcript-card { display: flex; flex-direction: column; min-height: 100%; }
+    .transcript-head { display: flex; align-items: start; justify-content: space-between; gap: 16px; padding: 24px 24px 16px; }
+    .transcript-head h2 { margin: 0 0 6px; font-size: 25px; letter-spacing: -.055em; }
+    .transcript-head p { margin: 0; color: var(--muted); font-size: 13px; }
+    .processing-state { display: inline-flex; align-items: center; gap: 6px; padding: 7px 9px; border-radius: 999px; color: var(--blue); background: var(--blue-soft); font-size: 11px; font-weight: 700; white-space: nowrap; }
+    .processing-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--blue); animation: pulse 1.1s ease-in-out infinite; }
+    .processing-state.is-done .processing-dot { animation: none; background: var(--green); }
+    .transcript-body { flex: 1; min-height: 0; max-height: none; overflow: auto; padding: 8px 24px 24px; border-top: 1px solid var(--line); }
+    .transcript-line { margin: 16px 0 0; padding-left: 14px; border-left: 2px solid var(--line); color: var(--muted); font-size: 13px; line-height: 1.5; }
+    .transcript-line.is-active { border-color: var(--blue); color: var(--ink); }
+    .transcript-speaker { display: block; margin-bottom: 4px; color: var(--ink); font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+    .cursor { display: inline-block; width: 1px; height: 1em; margin-left: 2px; vertical-align: -2px; background: var(--blue); animation: blink .85s steps(1) infinite; }
+    .analysis-inputs { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 10px auto 18px; }
+    .input-pill { padding: 9px 12px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255,255,255,.7); color: var(--muted); font-size: 12px; }
+    .input-pill strong { color: var(--ink); }
+    .evidence-stage { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: 560px; gap: 16px; margin-bottom: 30px; overflow: visible; transition: grid-template-columns .95s cubic-bezier(.16, 1, .3, 1); }
+    .evidence-stage > * { min-width: 0; height: 560px; transition: box-shadow .8s cubic-bezier(.16, 1, .3, 1); }
+    .evidence-stage:has(.transcript-card:hover) { grid-template-columns: 1.8fr .6fr .6fr; }
+    .evidence-stage:has(.detection-card:hover) { grid-template-columns: .6fr 1.8fr .6fr; }
+    .evidence-stage:has(.features-card:hover) { grid-template-columns: .6fr .6fr 1.8fr; }
+    .evidence-stage > *:hover { position: relative; z-index: 2; box-shadow: 0 28px 70px rgba(33,33,38,.18); }
+    .features-card { overflow: hidden; padding: 24px; }
+    .features-card h2 { margin: 0 0 8px; font-size: 23px; letter-spacing: -.05em; }
+    .features-card > p { margin-bottom: 18px; color: var(--muted); font-size: 13px; line-height: 1.45; }
+    .feature-list { display: grid; gap: 10px; max-height: calc(100% - 112px); margin: 0; padding: 0 8px 0 0; overflow-y: auto; list-style: none; scrollbar-color: var(--blue-soft) transparent; }
+    .feature-list li { display: flex; justify-content: space-between; gap: 16px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 13px; }
+    .feature-list span { color: var(--muted); text-align: right; }
+    @keyframes pulse { 50% { opacity: .35; transform: scale(.7); } }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    .analysis-head { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 20px; }
+    .analysis-head h2 { margin-bottom: 0; font-size: 32px; letter-spacing: -.055em; }
+    .analysis-head p { max-width: 390px; margin-bottom: 1px; color: var(--muted); font-size: 14px; line-height: 1.45; }
+    .ai-analysis-panel { padding: 24px; }
+    .ai-analysis-panel .section-kicker { margin-bottom: 8px; }
+    .ai-analysis-panel h2 { margin-bottom: 10px; font-size: 25px; letter-spacing: -.055em; }
+    .executive-summary { margin-bottom: 20px; color: var(--muted); font-size: 14px; line-height: 1.5; }
+    .ai-analysis-panel .metric { grid-template-columns: minmax(130px, 1fr) 70px; gap: 12px; min-height: 0; padding: 12px 0; }
+    .ai-analysis-panel .metric-bar { display: none; }
+    .ai-analysis-panel .metric-score { color: var(--ink); font-size: 13px; font-weight: 700; }
+    .metric-reason { grid-column: 1 / -1; margin-top: -5px; color: var(--muted); font-size: 12px; line-height: 1.4; }
+    .analysis-flow { display: flex; flex-direction: column; align-items: center; margin: 0 0 24px; color: var(--blue); }
+    .flow-line { width: 1px; height: 28px; background: linear-gradient(var(--line), var(--blue)); }
+    .flow-arrow { font-size: 24px; line-height: .8; }
+    .flow-label { margin-top: 8px; font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+    .detection-card { margin-bottom: 0; }
+    .detection-card .video-frame { min-height: 0; padding: 18px; background: #e9eaf0; }
+    .detection-card video { width: min(100%, 880px); margin: 0 auto; aspect-ratio: 16 / 9; }
+    .detection-card .video-meta { padding-bottom: 24px; }
+    .analysis-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: 16px; }
+    .panel { border: 1px solid var(--line); border-radius: var(--radius); background: var(--card); box-shadow: 0 10px 30px rgba(33,33,38,.04); }
+    .score-list { padding: 10px 22px; }
+    .metric { display: grid; grid-template-columns: 1fr 105px 48px; align-items: center; gap: 16px; min-height: 67px; border-bottom: 1px solid var(--line); }
+    .metric:last-child { border-bottom: 0; }
+    .metric-name { font-size: 14px; letter-spacing: -.015em; }
+    .metric-bar { height: 6px; overflow: hidden; border-radius: 99px; background: #e5e5e9; }
+    .metric-bar span { display: block; height: 100%; border-radius: inherit; background: var(--blue); }
+    .metric:nth-child(2) .metric-bar span, .metric:nth-child(4) .metric-bar span { background: var(--amber); }
+    .metric-score { color: var(--muted); font-size: 13px; text-align: right; }
+    .focus-panel { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; padding: 24px; }
+    .focus-panel h3 { grid-column: 1 / -1; margin: 0; font-size: 17px; letter-spacing: -.035em; }
+    .focus-item { padding: 15px 0; border-top: 1px solid var(--line); }
+    .focus-item:first-of-type { padding-top: 0; border-top: 0; }
+    .focus-item strong { display: block; margin-bottom: 6px; font-size: 13px; }
+    .focus-item p { margin-bottom: 0; color: var(--muted); font-size: 13px; line-height: 1.45; }
+    .focus-item strong::before { content: ""; display: inline-block; width: 7px; height: 7px; margin: 0 8px 1px 0; border-radius: 50%; background: var(--blue); }
+
+    details { margin-top: 18px; border-top: 1px solid var(--line); }
+    summary { display: flex; justify-content: space-between; gap: 16px; padding: 22px 2px; color: var(--ink); cursor: pointer; list-style: none; font-size: 14px; font-weight: 600; }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: "+"; color: var(--blue); font-size: 20px; font-weight: 400; line-height: 1; }
+    details[open] summary::after { content: "–"; }
+    .full-evaluation { padding: 0 22px 28px; color: var(--muted); font-size: 14px; line-height: 1.55; }
+    .full-evaluation h3 { margin: 24px 0 7px; color: var(--ink); font-size: 16px; letter-spacing: -.02em; }
+    .full-evaluation h3:first-child { margin-top: 0; }
+    .full-evaluation ul { margin: 7px 0 0; padding-left: 19px; }
+    .full-evaluation li + li { margin-top: 5px; }
+    .footer { display: flex; justify-content: space-between; gap: 20px; margin-top: 42px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; }
+
+    @media (max-width: 900px) {
+      .page { width: min(100% - 32px, 620px); padding-top: 20px; }
+      .topbar { padding-bottom: 32px; }
+      .top-note { display: none; }
+      .hero { grid-template-columns: 1fr; gap: 24px; padding-bottom: 32px; }
+      .score-lockup { width: fit-content; }
+      .evidence-stage, .analysis-grid { grid-template-columns: 1fr; }
+      .evidence-stage:has(.transcript-card:hover), .evidence-stage:has(.detection-card:hover), .evidence-stage:has(.features-card:hover) { grid-template-columns: 1fr; }
+      .evidence-stage > * { height: auto; min-height: 0; }
+      .video-frame { min-height: 0; padding: 12px; }
+      .video-card:first-child video { max-width: 250px; max-height: 440px; }
+      .review-stage > .video-card:first-child video { max-width: none; max-height: none; }
+      .video-card:last-child video { max-height: none; }
+      .transcript-body { min-height: 300px; max-height: 460px; }
+      .detection-card { margin-bottom: 0; }
+      .analysis-head { display: block; }
+      .analysis-head h2 { margin-bottom: 10px; }
+      .focus-panel { grid-template-columns: 1fr; gap: 0; }
+      .focus-panel h3 { margin-bottom: 20px; }
+    }
+    @media (max-width: 480px) {
+      h1 { font-size: 46px; }
+      .hero-copy { font-size: 16px; }
+      .video-meta { display: block; }
+      .meta-chip { display: inline-block; margin-top: 14px; }
+      .metric { grid-template-columns: 1fr 78px 42px; gap: 10px; }
+      .footer { display: block; }
+      .footer span { display: block; margin-top: 6px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .evidence-stage, .evidence-stage > * { transition: none; }
+      .evidence-stage > *:hover { transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <nav class="topbar" aria-label="Page header">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">S</span><span>Sales call · AI review</span></div>
+      <span class="top-note">Samsung Galaxy S26 Ultra · 20 Aug 2026</span>
+    </nav>
+
+    <header class="hero">
+      <div>
+        <p class="eyebrow">A closer look at the conversation</p>
+        <h1>See the call.<br>Understand the moment.</h1>
+        <p class="hero-copy">Watch the interaction unfold, then follow the transcript, face tracking, and product context as they feed the AI analysis.</p>
+      </div>
+      <div class="score-lockup" aria-label="Overall score 2.8 out of 5, requires retraining">
+        <span class="score-number">2.8 <small>/ 5</small></span>
+        <span class="score-label">Requires retraining</span>
+      </div>
+    </header>
+
+    <section class="review-stage" aria-label="Sales interaction and transcript">
+      <article class="video-card">
+        <div class="video-frame hero-video">
+          <video id="sales-video" autoplay loop muted preload="auto" playsinline poster="take-poster.jpg" src="take.mp4" aria-label="Salesperson simulation video"></video>
+          <div class="hero-video-controls" aria-label="Sales video controls">
+            <button class="hero-video-toggle" id="hero-video-toggle" type="button" aria-label="Pause sales interaction">Pause</button>
+            <button class="hero-video-mute" id="hero-video-mute" type="button" aria-label="Unmute sales interaction">Unmute</button>
+          </div>
+        </div>
+        <div class="video-meta">
+          <div><h2>The sales interaction</h2><p>AI-generated salesperson simulation · 1:55</p></div>
+          <span class="meta-chip">Input video</span>
+        </div>
+      </article>
+    </section>
+
+    <div class="analysis-flow" aria-label="AI analysis flow">
+      <span class="flow-line"></span><span class="flow-arrow" aria-hidden="true">↓</span><span class="flow-label">AI analysis layer</span>
+    </div>
+
+    <div class="analysis-inputs" aria-label="Inputs to the AI analysis layer">
+      <span class="input-pill"><strong>Transcript</strong> · what was said</span>
+      <span class="input-pill"><strong>Face tracking</strong> · how it was delivered</span>
+      <span class="input-pill"><strong>Product context</strong> · what was accurate</span>
+    </div>
+
+    <section class="evidence-stage" aria-label="Transcript, face analysis, and product context">
+      <article class="panel transcript-card" aria-labelledby="transcript-title">
+        <div class="transcript-head">
+          <div><p class="section-kicker">Extracted transcript</p><h2 id="transcript-title">The conversation, in words</h2><p>Revealed in sync with playback.</p></div>
+          <span class="processing-state" id="transcript-state"><span class="processing-dot"></span><span class="state-label">Waiting</span></span>
+        </div>
+        <div class="transcript-body" id="transcript" aria-live="polite"></div>
+      </article>
+      <article class="video-card detection-card" aria-label="Real-time face analysis">
+        <div class="video-frame"><video id="face-video" autoplay loop muted preload="auto" playsinline poster="face-detection-poster.jpg" src="face_detection.mp4" aria-label="Real-time face, eye, and lip detection video"></video></div>
+        <div class="video-meta"><div><h2>What the model saw</h2><p>Face, eye, and lip bounding boxes tracked in real time · 1:55</p></div><span class="meta-chip">AI view</span></div>
+      </article>
+      <article class="panel features-card" aria-labelledby="features-title">
+        <p class="section-kicker">Product context</p>
+        <h2 id="features-title">What the pitch could draw from</h2>
+        <p>Reference facts from the Galaxy S26 Ultra feature sheet are compared with what was said.</p>
+        <ul class="feature-list">
+          <li><strong>Launch price</strong><span>₹1,39,999 · 256 GB / 12 GB</span></li>
+          <li><strong>Build</strong><span>Armor Aluminum · 214 g · 7.9 mm</span></li>
+          <li><strong>Battery</strong><span>5,000 mAh · up to 31 hrs video</span></li>
+          <li><strong>Processor</strong><span>Snapdragon 8 Elite Gen 5 for Galaxy</span></li>
+          <li><strong>Cooling</strong><span>21% greater thermal performance</span></li>
+          <li><strong>Display</strong><span>6.9″ QHD+ · Privacy Display</span></li>
+          <li><strong>Camera</strong><span>200 MP · f/1.4 · 5× optical zoom</span></li>
+          <li><strong>Video</strong><span>8K 30 fps · 4K up to 120 fps Pro Video</span></li>
+          <li><strong>Productivity</strong><span>Integrated S Pen · 7 years updates</span></li>
+          <li><strong>Charging</strong><span>60 W wired · 0–75% in ~30 min</span></li>
+        </ul>
+      </article>
+    </section>
+
+    <div class="analysis-flow" aria-label="AI analysis output flow">
+      <span class="flow-line"></span><span class="flow-arrow" aria-hidden="true">↓</span><span class="flow-label">AI Analysis</span>
+    </div>
+
+    <section class="panel ai-analysis-panel" aria-labelledby="analysis-output-title" style="margin-bottom:62px">
+      <p class="section-kicker">AI Analysis</p>
+      <h2 id="analysis-output-title">Executive summary</h2>
+      <p class="executive-summary">The representative was calm, polite, and easy to follow. Conversion potential was held back by a major battery error, missed Ultra differentiators, filler phrases, no branded attire, and passive handling of price resistance.</p>
+      <div class="score-list" style="padding:0" aria-label="Performance breakdown with reasons">
+        <div class="metric"><span class="metric-name">Physical composure</span><span class="metric-score">3.5 / 5</span><span class="metric-reason">Steady posture and central eye contact; facial expression could be warmer and more engaging.</span></div>
+        <div class="metric"><span class="metric-name">Appearance & grooming</span><span class="metric-score">3.0 / 5</span><span class="metric-reason">Face was clear and well-lit; plain yellow polo and casual hair missed the professional standard.</span></div>
+        <div class="metric"><span class="metric-name">Articulation & delivery</span><span class="metric-score">3.0 / 5</span><span class="metric-reason">Good pace and natural language; frequent “you know”, “right”, and truncated product phrasing.</span></div>
+        <div class="metric"><span class="metric-name">Product knowledge</span><span class="metric-score">2.5 / 5</span><span class="metric-reason">Called the battery 500 mAh instead of 5,000 mAh and missed Privacy Display, S Pen, and 7-year updates.</span></div>
+        <div class="metric"><span class="metric-name">Objection handling</span><span class="metric-score">2.5 / 5</span><span class="metric-reason">Did not ask discovery questions and moved away from the Ultra before establishing value or financing options.</span></div>
+      </div>
+    </section>
+
+    <section id="analysis" aria-labelledby="analysis-title">
+      <div class="analysis-head">
+        <div><p class="section-kicker">Areas of improvement</p><h2 id="analysis-title">Areas of Improvement</h2></div>
+        <p>Three focused actions derived from the transcript, face tracking, and product reference.</p>
+      </div>
+
+      <div class="panel focus-panel">
+        <h3>Three places to focus</h3>
+        <div class="focus-item"><strong>Close the knowledge gaps</strong><p>Use the exact 5,000 mAh battery figure, Snapdragon 8 Elite Gen 5 for Galaxy name, Built-in Privacy Display, Integrated S Pen, 60 W charging, and 7-year updates.</p></div>
+        <div class="focus-item"><strong>Ask before recommending</strong><p>When the customer says they use the phone heavily, ask which apps or tasks take up most of their day before choosing a device.</p></div>
+        <div class="focus-item"><strong>Reframe price with value</strong><p>Connect the ₹1,39,999 investment to their needs, then mention trade-in, bank EMI, and long-term durability before downselling.</p></div>
+      </div>
+
+      <details>
+        <summary>Read the full evaluation</summary>
+        <div class="full-evaluation">
+          <h3>What worked</h3>
+          <ul><li>Stable posture and a consistent, forward-facing eye line.</li><li>Natural pacing and easy-to-follow language.</li><li>Clean lighting with full facial visibility.</li></ul>
+          <h3>What needs work</h3>
+          <ul><li>Use a warmer greeting, empathetic nods, and open hand gestures.</li><li>Replace filler words such as “you know,” “right,” and “it’s like” with confident pauses.</li><li>Use the official branded uniform and a more polished grooming standard.</li><li>Correct the battery figure to 5,000 mAh and use the full Snapdragon 8 Elite Gen 5 for Galaxy name.</li><li>Highlight the Built-in Privacy Display, Integrated S Pen, 60 W fast charging, and 7-year software guarantee.</li></ul>
+          <h3>Suggested value response</h3>
+          <p>“I completely understand. It’s a significant investment, so let’s make sure every rupee delivers real value for your daily routine. Since you use your phone heavily, the 5,000 mAh battery, 60 W charging, and improved cooling are designed to keep up over time. We can also check exchange value and EMI options.”</p>
+          <h3>Practice next</h3>
+          <ul><li>Re-certify on the Galaxy S26 Ultra specification sheet.</li><li>Practice asking discovery questions before recommending.</li><li>Roleplay the three-step response: acknowledge, connect value, offer a path to purchase.</li></ul>
+        </div>
+      </details>
+    </section>
+
+    <footer class="footer"><span>Internal sales training review</span><span>Evaluation generated 20 August 2026</span></footer>
+  </main>
+  <script>
+    const transcript = [
+      ['Customer', "Hi, I'm thinking of upgrading my phone. I've been using my current one for a few years, and I mainly want something with a really good camera and good battery life. I don't really game much, but I use my phone pretty heavily throughout the day. What would you suggest?"],
+      ['Salesperson', "In that case, I'd take a look at the Samsung Galaxy S26 Ultra. It's Samsung's latest flagship, released in 2026. The camera is one of its biggest strengths—you get a 200MP main camera with dedicated zoom cameras, so it's great for everyday photos, portraits, and longer-distance shots."],
+      ['Customer', "That sounds good, but flagship phones are getting really expensive now. How much does this one actually cost?"],
+      ['Salesperson', "It launched in India at around ₹1.4 lakh for the 256GB version, so yes, it's definitely a premium phone."],
+      ['Customer', "Okay... and apart from the camera, what am I actually getting for that price?"],
+      ['Salesperson', "You get a large 6.9-inch 120Hz AMOLED display, flagship Snapdragon performance, a 5,000mAh battery, and Samsung's Galaxy AI features for things like photo editing, search, and everyday assistance."],
+      ['Customer', "Hmm... I don't know. ₹1.4 lakh still feels like a lot. I'm not really convinced I'd use enough of those features to justify spending that much."],
+      ['Salesperson', "That's completely fair. In that case, I wouldn't push you toward the Ultra. Let me show you the regular Galaxy S26 instead. You'll still get the core Samsung flagship experience and strong performance, but at a lower price. We can compare the two side by side and see whether the Ultra actually gives you anything worth paying extra for."]
+    ];
+
+    const transcriptRoot = document.querySelector('#transcript');
+    const transcriptState = document.querySelector('#transcript-state');
+    const stateLabel = transcriptState.querySelector('.state-label');
+    const salesVideo = document.querySelector('#sales-video');
+    const faceVideo = document.querySelector('#face-video');
+    const heroToggle = document.querySelector('#hero-video-toggle');
+    const heroMute = document.querySelector('#hero-video-mute');
+    let syncing = false;
+    const totalCharacters = transcript.reduce((sum, [, text]) => sum + text.length, 0);
+
+    function setState(label, done = false) {
+      stateLabel.textContent = label;
+      transcriptState.classList.toggle('is-done', done);
+    }
+
+    function renderTranscript(progress) {
+      const visibleCharacters = Math.floor(totalCharacters * Math.max(0, Math.min(1, progress)));
+      let remaining = visibleCharacters;
+      const previousScrollTop = transcriptRoot.scrollTop;
+      const wasAtBottom = transcriptRoot.scrollTop + transcriptRoot.clientHeight >= transcriptRoot.scrollHeight - 24;
+      transcriptRoot.innerHTML = '';
+
+      transcript.forEach(([speaker, text]) => {
+        const line = document.createElement('p');
+        line.className = 'transcript-line';
+        const label = document.createElement('span');
+        label.className = 'transcript-speaker';
+        label.textContent = speaker;
+        const words = document.createElement('span');
+        const shown = Math.max(0, Math.min(text.length, remaining));
+        words.textContent = text.slice(0, shown);
+        line.append(label, words);
+
+        if (shown > 0 && shown < text.length) {
+          line.classList.add('is-active');
+          const cursor = document.createElement('span');
+          cursor.className = 'cursor';
+          line.appendChild(cursor);
+        }
+        if (shown > 0 || remaining > 0) transcriptRoot.appendChild(line);
+        remaining = Math.max(0, remaining - text.length);
+      });
+
+      const activeLine = transcriptRoot.querySelector('.is-active');
+      if (activeLine && wasAtBottom) transcriptRoot.scrollTop = transcriptRoot.scrollHeight;
+      else if (!wasAtBottom) transcriptRoot.scrollTop = Math.min(previousScrollTop, transcriptRoot.scrollHeight);
+    }
+
+    function updateTranscript() {
+      const duration = salesVideo.duration || 114.85;
+      const progress = salesVideo.currentTime / duration;
+      renderTranscript(progress);
+      if (salesVideo.paused) setState(salesVideo.currentTime > 0 ? 'Paused' : 'Waiting');
+      else setState('Analyzing');
+      heroToggle.textContent = salesVideo.paused ? 'Play' : 'Pause';
+      heroToggle.setAttribute('aria-label', salesVideo.paused ? 'Play sales interaction' : 'Pause sales interaction');
+    }
+
+    function syncPlayback(source, target) {
+      if (syncing) return;
+      syncing = true;
+      target.currentTime = source.currentTime;
+      if (source.paused) target.pause();
+      else target.play().catch(() => setState('Click play to start'));
+      window.setTimeout(() => { syncing = false; }, 50);
+      updateTranscript();
+    }
+
+    salesVideo.addEventListener('play', () => syncPlayback(salesVideo, faceVideo));
+    salesVideo.addEventListener('pause', () => syncPlayback(salesVideo, faceVideo));
+    salesVideo.addEventListener('seeking', () => syncPlayback(salesVideo, faceVideo));
+    salesVideo.addEventListener('timeupdate', () => {
+      if (Math.abs(faceVideo.currentTime - salesVideo.currentTime) > 0.12) faceVideo.currentTime = salesVideo.currentTime;
+      updateTranscript();
+    });
+    faceVideo.addEventListener('play', () => syncPlayback(faceVideo, salesVideo));
+    faceVideo.addEventListener('pause', () => syncPlayback(faceVideo, salesVideo));
+    faceVideo.addEventListener('seeking', () => syncPlayback(faceVideo, salesVideo));
+    faceVideo.addEventListener('timeupdate', () => {
+      if (Math.abs(salesVideo.currentTime - faceVideo.currentTime) > 0.12) salesVideo.currentTime = faceVideo.currentTime;
+    });
+    heroToggle.addEventListener('click', () => {
+      if (salesVideo.paused) salesVideo.play().catch(() => setState('Click play to start'));
+      else salesVideo.pause();
+    });
+    heroMute.addEventListener('click', () => {
+      salesVideo.muted = !salesVideo.muted;
+      heroMute.textContent = salesVideo.muted ? 'Unmute' : 'Mute';
+      heroMute.setAttribute('aria-label', salesVideo.muted ? 'Unmute sales interaction' : 'Mute sales interaction');
+    });
+    salesVideo.addEventListener('loadedmetadata', () => {
+      faceVideo.currentTime = 0;
+      renderTranscript(0);
+      Promise.all([salesVideo.play(), faceVideo.play()]).catch(() => setState('Click play to start'));
+    });
+    renderTranscript(0);
+  </script>
+</body>
+</html>
