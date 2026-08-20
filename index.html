@@ -66,6 +66,19 @@
     .video-meta h2 { margin-bottom: 6px; font-size: 18px; letter-spacing: -.035em; }
     .video-meta p { margin-bottom: 0; color: var(--muted); font-size: 13px; line-height: 1.4; }
     .meta-chip { flex: none; padding: 7px 9px; border-radius: 999px; color: var(--blue); background: var(--blue-soft); font-size: 11px; font-weight: 700; white-space: nowrap; }
+    .source-transcript, .source-visual, .source-reference { position: relative; }
+    .source-transcript::before, .source-visual::before, .source-reference::before { content: ""; position: absolute; z-index: 3; inset: 0 0 auto; height: 4px; }
+    .source-transcript::before { background: #147ef5; }
+    .source-visual::before { background: #00a2a5; }
+    .source-reference::before { background: #7357d9; }
+    .input-cue { display: inline-flex; align-items: center; gap: 7px; width: fit-content; margin: 0 0 10px; padding: 6px 9px; border-radius: 999px; font-size: 10px; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }
+    .input-cue::before { content: ""; width: 8px; height: 8px; border: 2px solid currentColor; }
+    .cue-transcript { color: #096fd8; background: #eaf3ff; }
+    .cue-transcript::before { border-width: 0 0 2px; transform: skewY(-24deg); }
+    .cue-visual { color: #007f82; background: #e4f7f6; }
+    .cue-visual::before { border-radius: 2px; }
+    .cue-reference { color: #6347c7; background: #f0ecff; }
+    .cue-reference::before { border-radius: 50%; }
     .transcript-card { display: flex; flex-direction: column; min-height: 100%; }
     .transcript-head { display: flex; align-items: start; justify-content: space-between; gap: 16px; padding: 24px 24px 16px; }
     .transcript-head h2 { margin: 0 0 6px; font-size: 25px; letter-spacing: -.055em; }
@@ -97,13 +110,26 @@
     .analysis-head { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 20px; }
     .analysis-head h2 { margin-bottom: 0; font-size: 32px; letter-spacing: -.055em; }
     .analysis-head p { max-width: 390px; margin-bottom: 1px; color: var(--muted); font-size: 14px; line-height: 1.45; }
-    .ai-analysis-panel { padding: 24px; }
+    .ai-analysis-panel { padding: 28px; }
     .ai-analysis-panel .section-kicker { margin-bottom: 8px; }
     .ai-analysis-panel h2 { margin-bottom: 10px; font-size: 25px; letter-spacing: -.055em; }
     .executive-summary { margin-bottom: 20px; color: var(--muted); font-size: 14px; line-height: 1.5; }
-    .ai-analysis-panel .metric { grid-template-columns: minmax(130px, 1fr) 70px; gap: 12px; min-height: 0; padding: 12px 0; }
-    .ai-analysis-panel .metric-bar { display: none; }
-    .ai-analysis-panel .metric-score { color: var(--ink); font-size: 13px; font-weight: 700; }
+    .analysis-overview { display: grid; grid-template-columns: minmax(250px, .8fr) minmax(0, 2.2fr); gap: 24px; align-items: stretch; }
+    .analysis-summary-block { padding-right: 24px; border-right: 1px solid var(--line); }
+    .analysis-summary-block .executive-summary { margin-bottom: 18px; }
+    .analysis-verdict { display: inline-flex; align-items: baseline; gap: 8px; padding: 10px 12px; border-radius: 13px; color: var(--red); background: #fff1f0; font-size: 11px; font-weight: 700; }
+    .analysis-verdict strong { color: var(--ink); font-size: 23px; letter-spacing: -.05em; }
+    .analysis-ratings { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+    .analysis-rating-card { display: flex; flex-direction: column; min-width: 0; padding: 15px; border: 1px solid var(--line); border-radius: 16px; background: rgba(255,255,255,.74); }
+    .analysis-rating-card h3 { min-height: 32px; margin: 0 0 12px; font-size: 12px; line-height: 1.3; letter-spacing: -.015em; }
+    .analysis-rating-card strong { display: block; margin-bottom: 6px; font-size: 25px; line-height: 1; letter-spacing: -.055em; }
+    .analysis-rating-card strong small { color: var(--muted); font-size: 11px; letter-spacing: 0; }
+    .rating-status { display: block; margin-bottom: 12px; color: var(--blue); font-size: 10px; font-weight: 700; }
+    .analysis-rating-card p { margin: auto 0 0; color: var(--muted); font-size: 11px; line-height: 1.4; }
+    .rating-track { display: block; height: 4px; margin: 12px 0; overflow: hidden; border-radius: 99px; background: #e7e7eb; }
+    .rating-track span { display: block; height: 100%; border-radius: inherit; background: var(--blue); }
+    .analysis-rating-card.is-gap .rating-status { color: var(--red); }
+    .analysis-rating-card.is-gap .rating-track span { background: var(--red); }
     .metric-reason { grid-column: 1 / -1; margin-top: -5px; color: var(--muted); font-size: 12px; line-height: 1.4; }
     .analysis-flow { display: flex; flex-direction: column; align-items: center; margin: 0 0 24px; color: var(--blue); }
     .flow-line { width: 1px; height: 28px; background: linear-gradient(var(--line), var(--blue)); }
@@ -160,6 +186,9 @@
       .detection-card { margin-bottom: 0; }
       .analysis-head { display: block; }
       .analysis-head h2 { margin-bottom: 10px; }
+      .analysis-overview { grid-template-columns: 1fr; }
+      .analysis-summary-block { padding: 0 0 22px; border-right: 0; border-bottom: 1px solid var(--line); }
+      .analysis-ratings { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .focus-panel { grid-template-columns: 1fr; gap: 0; }
       .focus-panel h3 { margin-bottom: 20px; }
     }
@@ -169,6 +198,7 @@
       .video-meta { display: block; }
       .meta-chip { display: inline-block; margin-top: 14px; }
       .metric { grid-template-columns: 1fr 78px 42px; gap: 10px; }
+      .analysis-ratings { grid-template-columns: 1fr; }
       .footer { display: block; }
       .footer span { display: block; margin-top: 6px; }
     }
@@ -201,7 +231,7 @@
     <section class="review-stage" aria-label="Sales interaction and transcript">
       <article class="video-card">
         <div class="video-frame hero-video">
-          <video id="sales-video" autoplay loop muted preload="auto" playsinline poster="take-poster.jpg" src="take.mp4" aria-label="Salesperson simulation video"></video>
+          <video id="sales-video" autoplay loop muted preload="auto" playsinline poster="take-poster.jpg" src="take-web.mp4" aria-label="Salesperson simulation video"></video>
           <div class="hero-video-controls" aria-label="Sales video controls">
             <button class="hero-video-toggle" id="hero-video-toggle" type="button" aria-label="Pause sales interaction">Pause</button>
             <button class="hero-video-mute" id="hero-video-mute" type="button" aria-label="Unmute sales interaction">Unmute</button>
@@ -225,19 +255,19 @@
     </div>
 
     <section class="evidence-stage" aria-label="Transcript, face analysis, and product context">
-      <article class="panel transcript-card" aria-labelledby="transcript-title">
+      <article class="panel transcript-card source-transcript" aria-labelledby="transcript-title">
         <div class="transcript-head">
-          <div><p class="section-kicker">Extracted transcript</p><h2 id="transcript-title">The conversation, in words</h2><p>Revealed in sync with playback.</p></div>
+          <div><p class="input-cue cue-transcript">Speech input</p><h2 id="transcript-title">The conversation, in words</h2><p>Revealed in sync with playback.</p></div>
           <span class="processing-state" id="transcript-state"><span class="processing-dot"></span><span class="state-label">Waiting</span></span>
         </div>
         <div class="transcript-body" id="transcript" aria-live="polite"></div>
       </article>
-      <article class="video-card detection-card" aria-label="Real-time face analysis">
+      <article class="video-card detection-card source-visual" aria-label="Real-time face analysis">
         <div class="video-frame"><video id="face-video" autoplay loop muted preload="auto" playsinline poster="face-detection-poster.jpg" src="face_detection.mp4" aria-label="Real-time face, eye, and lip detection video"></video></div>
-        <div class="video-meta"><div><h2>What the model saw</h2><p>Face, eye, and lip bounding boxes tracked in real time · 1:55</p></div><span class="meta-chip">AI view</span></div>
+        <div class="video-meta"><div><p class="input-cue cue-visual">Visual input</p><h2>What the model saw</h2><p>Face, eye, and lip bounding boxes tracked in real time · 1:55</p></div><span class="meta-chip">AI view</span></div>
       </article>
-      <article class="panel features-card" aria-labelledby="features-title">
-        <p class="section-kicker">Product context</p>
+      <article class="panel features-card source-reference" aria-labelledby="features-title">
+        <p class="input-cue cue-reference">Reference input</p>
         <h2 id="features-title">What the pitch could draw from</h2>
         <p>Reference facts from the Galaxy S26 Ultra feature sheet are compared with what was said.</p>
         <ul class="feature-list">
@@ -260,15 +290,20 @@
     </div>
 
     <section class="panel ai-analysis-panel" aria-labelledby="analysis-output-title" style="margin-bottom:62px">
-      <p class="section-kicker">AI Analysis</p>
-      <h2 id="analysis-output-title">Executive summary</h2>
-      <p class="executive-summary">The representative was calm, polite, and easy to follow. Conversion potential was held back by a major battery error, missed Ultra differentiators, filler phrases, no branded attire, and passive handling of price resistance.</p>
-      <div class="score-list" style="padding:0" aria-label="Performance breakdown with reasons">
-        <div class="metric"><span class="metric-name">Physical composure</span><span class="metric-score">3.5 / 5</span><span class="metric-reason">Steady posture and central eye contact; facial expression could be warmer and more engaging.</span></div>
-        <div class="metric"><span class="metric-name">Appearance & grooming</span><span class="metric-score">3.0 / 5</span><span class="metric-reason">Face was clear and well-lit; plain yellow polo and casual hair missed the professional standard.</span></div>
-        <div class="metric"><span class="metric-name">Articulation & delivery</span><span class="metric-score">3.0 / 5</span><span class="metric-reason">Good pace and natural language; frequent “you know”, “right”, and truncated product phrasing.</span></div>
-        <div class="metric"><span class="metric-name">Product knowledge</span><span class="metric-score">2.5 / 5</span><span class="metric-reason">Called the battery 500 mAh instead of 5,000 mAh and missed Privacy Display, S Pen, and 7-year updates.</span></div>
-        <div class="metric"><span class="metric-name">Objection handling</span><span class="metric-score">2.5 / 5</span><span class="metric-reason">Did not ask discovery questions and moved away from the Ultra before establishing value or financing options.</span></div>
+      <div class="analysis-overview">
+        <div class="analysis-summary-block">
+          <p class="section-kicker">AI Analysis</p>
+          <h2 id="analysis-output-title">Executive summary</h2>
+          <p class="executive-summary">The representative was calm, polite, and easy to follow. Conversion potential was held back by a major battery error, missed Ultra differentiators, filler phrases, no branded attire, and passive handling of price resistance.</p>
+          <span class="analysis-verdict"><strong>2.8 / 5</strong> Requires retraining</span>
+        </div>
+        <div class="analysis-ratings" aria-label="Performance breakdown with reasons">
+          <article class="analysis-rating-card"><h3>Physical composure</h3><strong>3.5 <small>/ 5</small></strong><span class="rating-status">Base standard</span><span class="rating-track"><span style="width:70%"></span></span><p>Steady posture and central eye contact; expression could be warmer.</p></article>
+          <article class="analysis-rating-card"><h3>Appearance & grooming</h3><strong>3.0 <small>/ 5</small></strong><span class="rating-status">Needs polish</span><span class="rating-track"><span style="width:60%"></span></span><p>Clear visibility, but attire and grooming missed the professional standard.</p></article>
+          <article class="analysis-rating-card"><h3>Articulation & delivery</h3><strong>3.0 <small>/ 5</small></strong><span class="rating-status">Developing</span><span class="rating-track"><span style="width:60%"></span></span><p>Natural pace, weakened by fillers and incomplete product phrasing.</p></article>
+          <article class="analysis-rating-card is-gap"><h3>Product knowledge</h3><strong>2.5 <small>/ 5</small></strong><span class="rating-status">Knowledge gap</span><span class="rating-track"><span style="width:50%"></span></span><p>Battery error plus missed Privacy Display, S Pen, and update promise.</p></article>
+          <article class="analysis-rating-card is-gap"><h3>Objection handling</h3><strong>2.5 <small>/ 5</small></strong><span class="rating-status">Needs coaching</span><span class="rating-track"><span style="width:50%"></span></span><p>No discovery questions; moved away before establishing value.</p></article>
+        </div>
       </div>
     </section>
 
