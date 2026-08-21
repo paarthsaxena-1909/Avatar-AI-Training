@@ -20,7 +20,7 @@ test('evaluation content has responsive evidence and coaching groups', () => {
 
 test('landing narrative keeps the demo second and includes the requested sales story', () => {
   assert.match(html, /An AI agent that calls your sales representatives/);
-  assert.match(html, /Request a Sample Report/);
+  assert.doesNotMatch(html, /Request a Sample Report/);
   assert.match(html, /id="how-it-works"/);
   assert.ok(html.indexOf('id="how-it-works"') < html.indexOf('id="sales-video"'));
   assert.match(html, /You can&#39;t be on every call\.|You can't be on every call\./);
@@ -33,7 +33,7 @@ test('supporting sections use compact tags, use-case cards, and final CTAs', () 
   assert.match(html, /id="use-cases"/);
   assert.match(html, /Retail &amp; Consumer Electronics/);
   assert.match(html, /Stop guessing how your team sounds on a real call/);
-  assert.ok((html.match(/Request a Sample Report/g) || []).length >= 2);
+  assert.match(html, /mailto:ailabs@timesinternet\.in\?subject=Talk%20to%20Us/);
 });
 
 test('video control settles its label after synchronized media events', () => {

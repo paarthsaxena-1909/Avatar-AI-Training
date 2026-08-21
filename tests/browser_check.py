@@ -10,9 +10,9 @@ with sync_playwright() as p:
         page.screenshot(path=f'/tmp/ai-labs-{name}.png', full_page=True)
         assert page.locator('img[alt="AI Labs"]').count() == 1
         assert page.get_by_text('An AI agent that calls your sales representatives', exact=False).count() == 1
-        assert page.locator('#sample-review').count() == 1
+        assert page.get_by_text('Request a Sample Report', exact=True).count() == 0
         assert page.locator('#sales-video').count() == 1
-        assert page.locator('a[href^="mailto:"]').count() >= 3
+        assert page.locator('a[href="mailto:ailabs@timesinternet.in?subject=Talk%20to%20Us"]').count() == 1
         page.locator('#hero-video-toggle').click()
         page.wait_for_timeout(100)
         assert page.locator('#hero-video-toggle').inner_text() == 'Play'
